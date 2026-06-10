@@ -94,6 +94,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       startTime: _start,
       location: _location.text.trim().isEmpty ? null : _location.text.trim(),
       missions: _missions.toList(),
+      authorId: user .id,    // the current user is pulled from AuthProvider wherever the new post is constructed
+      createdAt: DateTime.now(), 
     );
     context.read<FeedProvider>().addPost(post);
     // Capture the messenger BEFORE popping, otherwise `context` is deactivated.
