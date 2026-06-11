@@ -9,6 +9,7 @@ import '../../providers/feed_provider.dart';
 import '../../providers/rsvp_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/campus_chip.dart';
+import '../../widgets/empty_state.dart';
 import '../../widgets/primary_button.dart';
 
 class EventDetailScreen extends StatelessWidget {
@@ -19,7 +20,16 @@ class EventDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final post = context.watch<FeedProvider>().byId(postId);
     if (post == null) {
-      return const Scaffold(body: Center(child: Text('Post not found')));
+      return Scaffold(
+        appBar: AppBar(),
+        body: EmptyState(
+          icon: Icons.error_outline,
+          title: 'Post not found',
+          message: 'This item may have been removed.',
+          actionLabel: 'Go back',
+          onAction: () => Navigator.of(context).pop(),
+        ),
+      );
     }
     final rsvp = context.watch<RsvpProvider>();
     final auth = context.watch<AuthProvider>();
@@ -126,27 +136,71 @@ class EventDetailScreen extends StatelessWidget {
                 label: 'interested'),
           ]),
           const SizedBox(height: 24),
-          PrimaryButton(
-            label: going ? '✓ You\'re going' : 'RSVP',
-            onPressed: () async {
-              await context.read<RsvpProvider>().toggleGoing(post.id);
-              if (context.mounted) {
+          if (post.type == PostType.event) ...[
+            PrimaryButton(
+              label: going ? '✓ You\'re going' : 'RSVP',
+              onPressed: () async {
+                await context.read<RsvpProvider>().toggleGoing(post.id);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(going
+                            ? 'RSVP removed'
+                            : 'You\'re going to "${post.title}"')),
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 12),
+            PrimaryButton(
+              label: interested ? '✓ Interested' : 'Interested',
+              outlined: true,
+              onPressed: () async {
+                await context.read<RsvpProvider>().toggleInterested(post.id);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(interested
+                          ? 'Removed from interested'
+                          : 'Marked as interested'),
+                    ),
+                  );
+                }
+              },
+            ),
+          ] else if (post.type == PostType.opportunity) ...[
+            PrimaryButton(
+              label: interested ? '✓ Application tracked' : 'Register interest',
+              onPressed: () async {
+                await context.read<RsvpProvider>().toggleInterested(post.id);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(interested
+                          ? 'Interest removed'
+                          : 'We\'ll remind you about "${post.title}"'),
+                    ),
+                  );
+                }
+              },
+            ),
+            if (post.applyBy != null) ...[
+              const SizedBox(height: 12),
+              Text(post.applyBy!,
+                  style: const TextStyle(
+                      color: AppColors.amber, fontWeight: FontWeight.w600)),
+            ],
+          ] else
+            PrimaryButton(
+              label: 'Got it',
+              outlined: true,
+              onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(going
-                          ? 'RSVP removed'
-                          : 'You\'re going to "${post.title}"')),
+                  const SnackBar(content: Text('Announcement acknowledged')),
                 );
-              }
-            },
-          ),
-          const SizedBox(height: 12),
-          PrimaryButton(
-            label: interested ? '✓ Interested' : 'Interested',
-            outlined: true,
-            onPressed: () =>
-                context.read<RsvpProvider>().toggleInterested(post.id),
-          ),
+                Navigator.pop(context);
+              },
+            ),
           const SizedBox(height: 24),
         ],
       ),

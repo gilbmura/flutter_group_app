@@ -7,6 +7,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/empty_state.dart';
 import '../../widgets/opportunity_card.dart';
 import '../../widgets/section_header.dart';
+import '../../widgets/tag_chip.dart';
 import '../detail/event_detail_screen.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -17,19 +18,25 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   String _query = '';
+  PostType? _typeFilter;
 
   @override
   Widget build(BuildContext context) {
-    final all = context.watch<FeedProvider>().posts;
+    final all = context.watch<FeedProvider>().allPosts;
     final q = _query.trim().toLowerCase();
-    final results = q.isEmpty
-        ? all
-        : all
-            .where((p) =>
-                p.title.toLowerCase().contains(q) ||
-                p.tags.any((t) => t.toLowerCase().contains(q)) ||
-                p.authorName.toLowerCase().contains(q))
-            .toList();
+    var results = all;
+    if (_typeFilter != null) {
+      results = results.where((p) => p.type == _typeFilter).toList();
+    }
+    if (q.isNotEmpty) {
+      results = results
+          .where((p) =>
+              p.title.toLowerCase().contains(q) ||
+              p.tags.any((t) => t.toLowerCase().contains(q)) ||
+              p.authorName.toLowerCase().contains(q) ||
+              p.missions.any((m) => m.toLowerCase().contains(q)))
+          .toList();
+    }
 
     return SafeArea(
       child: Padding(
@@ -43,11 +50,46 @@ class _ExploreScreenState extends State<ExploreScreen> {
             TextField(
               onChanged: (v) => setState(() => _query = v),
               decoration: const InputDecoration(
-                hintText: 'Search opportunities, events, people...',
+                hintText: 'Search opportunities, events, missions...',
                 prefixIcon: Icon(Icons.search, color: AppColors.textMuted),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 40,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  TagChip(
+                    label: 'All',
+                    selected: _typeFilter == null,
+                    onTap: () => setState(() => _typeFilter = null),
+                  ),
+                  const SizedBox(width: 8),
+                  TagChip(
+                    label: 'Events',
+                    selected: _typeFilter == PostType.event,
+                    onTap: () =>
+                        setState(() => _typeFilter = PostType.event),
+                  ),
+                  const SizedBox(width: 8),
+                  TagChip(
+                    label: 'Opportunities',
+                    selected: _typeFilter == PostType.opportunity,
+                    onTap: () =>
+                        setState(() => _typeFilter = PostType.opportunity),
+                  ),
+                  const SizedBox(width: 8),
+                  TagChip(
+                    label: 'Announcements',
+                    selected: _typeFilter == PostType.announcement,
+                    onTap: () =>
+                        setState(() => _typeFilter = PostType.announcement),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             SectionHeader(
                 title: q.isEmpty ? 'Recommended for you' : 'Results'),
             Expanded(
@@ -55,7 +97,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ? const EmptyState(
                       icon: Icons.search_off,
                       title: 'No matches',
-                      message: 'Try a different keyword or tag.',
+                      message:
+                          'Try a different keyword, mission, or category.',
                     )
                   : ListView.builder(
                       itemCount: results.length,

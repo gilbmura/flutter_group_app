@@ -82,6 +82,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       setState(() => _error = 'Only organizers can post events or opportunities.');
       return;
     }
+    final missions = _missions.isEmpty
+        ? List<String>.from(user.missions)
+        : _missions.toList();
     final post = Post(
       id: const Uuid().v4(),
       type: _type,
@@ -89,18 +92,21 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       description: _desc.text.trim(),
       authorName: user.name,
       authorRole: user.role.label,
+      authorId: user.id,
       campus: _campus,
-      isHybrid: _hybrid,
-      startTime: _start,
+      isHybrid: _hybrid || _campus == Campus.all,
+      startTime: _start ?? DateTime.now(),
       location: _location.text.trim().isEmpty ? null : _location.text.trim(),
-      missions: _missions.toList(),
+      tags: [_type.label],
+      missions: missions,
     );
-    context.read<FeedProvider>().addPost(post);
-    // Capture the messenger BEFORE popping, otherwise `context` is deactivated.
+    final feed = context.read<FeedProvider>();
+    feed.resetFilters();
+    feed.addPost(post);
     final messenger = ScaffoldMessenger.of(context);
-    Navigator.pop(context);
+    Navigator.pop(context, true);
     messenger.showSnackBar(
-      const SnackBar(content: Text('Posted to the feed 🎉')),
+      SnackBar(content: Text('"${post.title}" is now on your feed')),
     );
   }
 
