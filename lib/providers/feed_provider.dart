@@ -56,14 +56,12 @@ class FeedProvider extends ChangeNotifier {
       return true;
     }).toList();
 
-    filtered.sort((a, b) {
-      final at = a.startTime ?? DateTime(2100);
-      final bt = b.startTime ?? DateTime(2100);
-      return at.compareTo(bt);
-    });
+    filtered.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return filtered;
   }
 
+  //For a the given user, when posts are made, the newest first show on the feed
+  List<Post> myPosts(String userId) => posts.where((p) => p.authorId == userId).toList();
   Post? byId(String id) {
     for (final p in _posts) {
       if (p.id == id) return p;
@@ -76,3 +74,5 @@ class FeedProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+
