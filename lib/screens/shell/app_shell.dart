@@ -36,16 +36,21 @@ class _AppShellState extends State<AppShell> {
     // immediately. Done post-frame to avoid notifying during the first build.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final auth = context.read<AuthProvider>();
+      final feed = context.read<FeedProvider>();
+      feed.resetFilters();
       if (auth.user != null) {
-        context.read<FeedProvider>().setMyMissions(auth.user!.missions);
+        feed.setMyMissions(auth.user!.missions);
       }
     });
   }
 
-  void _openCreate() {
-    Navigator.of(context).push(
+  Future<void> _openCreate() async {
+    final posted = await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => const CreatePostScreen()),
     );
+    if (posted == true && mounted) {
+      setState(() => _index = 0);
+    }
   }
 
   @override

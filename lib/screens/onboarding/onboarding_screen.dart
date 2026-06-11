@@ -5,6 +5,7 @@ import '../../data/mock_data.dart';
 import '../../models/app_user.dart';
 import '../../models/campus.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/feed_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/primary_button.dart';
 
@@ -449,14 +450,18 @@ class _SignInSheetState extends State<_SignInSheet> {
       setState(() => _error = 'Please enter your name to continue.');
       return;
     }
+    final missions = _missions.toList();
     await context.read<AuthProvider>().signIn(
           name: _name.text,
           email: _email.text,
           campus: _campus,
           role: _role,
-          missions: _missions.toList(),
+          missions: missions,
         );
-    if (mounted) Navigator.pop(context);
+    if (mounted) {
+      context.read<FeedProvider>().setMyMissions(missions);
+      Navigator.pop(context);
+    }
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'data/mock_data.dart';
 import 'providers/auth_provider.dart';
 import 'providers/chat_provider.dart';
+import 'providers/communities_provider.dart';
 import 'providers/feed_provider.dart';
 import 'providers/rsvp_provider.dart';
 import 'screens/onboarding/onboarding_screen.dart';
@@ -15,7 +16,6 @@ class AluConnectApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // All providers are created once at the root and shared down the tree.
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
@@ -23,6 +23,7 @@ class AluConnectApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FeedProvider(MockData.posts())),
         ChangeNotifierProvider(
             create: (_) => ChatProvider(MockData.conversations())),
+        ChangeNotifierProvider(create: (_) => CommunitiesProvider()),
       ],
       child: MaterialApp(
         title: 'ALU Intercampus Connect',
@@ -34,9 +35,7 @@ class AluConnectApp extends StatelessWidget {
   }
 }
 
-/// Decides the first screen: a splash while we load persisted state, then either
-/// the onboarding flow or the signed-in app shell. This is where SharedPreferences
-/// is read on launch.
+/// Loads persisted state, then routes to onboarding or the signed-in shell.
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
   @override
@@ -47,16 +46,42 @@ class _AuthGateState extends State<AuthGate> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
-      await context.read<AuthProvider>().load();
-      await context.read<RsvpProvider>().load();
-    });
+    Future.microtask(_bootstrap);
+  }
+
+  Future<void> _bootstrap() async {
+    final auth = context.read<AuthProvider>();
+    final feed = context.read<FeedProvider>();
+    final chat = context.read<ChatProvider>();
+    final communities = context.read<CommunitiesProvider>();
+    final rsvp = context.read<RsvpProvider>();
+
+    await Future.wait([
+      auth.load(),
+      feed.load(),
+      chat.load(),
+      communities.load(MockData.communities()),
+      rsvp.load(),
+    ]);
+
+    if (auth.user != null) {
+      feed.setMyMissions(auth.user!.missions);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    if (!auth.loaded) {
+    final feed = context.watch<FeedProvider>();
+    final chat = context.watch<ChatProvider>();
+    final communities = context.watch<CommunitiesProvider>();
+
+    final ready = auth.loaded &&
+        feed.loaded &&
+        chat.loaded &&
+        communities.loaded;
+
+    if (!ready) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(color: AppColors.amber),

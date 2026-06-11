@@ -33,8 +33,6 @@ class AuthProvider extends ChangeNotifier {
         campus: Campus.values[prefs.getInt(_kCampus) ?? 0],
         role: UserRole.values[prefs.getInt(_kRole) ?? 0],
         missions: prefs.getStringList(_kMissions) ?? const [],
-        eventsOrganized: 4,
-        communitiesLed: 2,
       );
     }
     _loaded = true;
@@ -55,8 +53,6 @@ class AuthProvider extends ChangeNotifier {
       campus: campus,
       role: role,
       missions: missions,
-      eventsOrganized: role == UserRole.organizer ? 4 : 1,
-      communitiesLed: role == UserRole.organizer ? 2 : 0,
     );
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_kId, user.id);
