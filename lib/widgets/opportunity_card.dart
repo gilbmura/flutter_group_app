@@ -41,21 +41,22 @@ class OpportunityCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 14),
         decoration: AppDecorations.card(),
         clipBehavior: Clip.antiAlias,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              width: 4,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [_accent, _accent.withOpacity(0.45)],
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                width: 4,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [_accent, _accent.withOpacity(0.45)],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
+              Expanded(
+                child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,9 +96,10 @@ class OpportunityCard extends StatelessWidget {
                     CampusChip(campus: post.campus, hybrid: post.isHybrid),
                   ],
                 ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
