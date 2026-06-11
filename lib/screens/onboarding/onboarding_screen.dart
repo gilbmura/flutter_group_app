@@ -61,14 +61,14 @@ class OnboardingScreen extends StatelessWidget {
                       onPressed: () => _openSignIn(context),
                     ),
                     const SizedBox(height: 20),
-                    Row(children: [
-                      const Expanded(child: Divider(color: AppColors.border)),
+                    const Row(children: [
+                      Expanded(child: Divider(color: AppColors.border)),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 12),
                         child: Text('or continue with',
                             style: TextStyle(color: AppColors.textMuted)),
                       ),
-                      const Expanded(child: Divider(color: AppColors.border)),
+                      Expanded(child: Divider(color: AppColors.border)),
                     ]),
                     const SizedBox(height: 20),
                     Row(
