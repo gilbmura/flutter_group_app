@@ -34,6 +34,34 @@ class HomeFeedScreen extends StatelessWidget {
     return SafeArea(
       child: CustomScrollView(
         slivers: [
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: AppColors.navy,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.amber,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.school,
+                  color: Color(0xFF1A1300),
+                  size: 20
+                  ),
+                ),
+                const SizedBox(width: 10),
+                const Text('Campus Connect',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 17
+                  )
+                ),
+              ],
+            ),
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
@@ -105,6 +133,37 @@ class HomeFeedScreen extends StatelessWidget {
             ),
           ),
 
+          if (user != null && feed.myPosts(user.id).isNotEmpty) ...[
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: SectionHeader(title: 'My posts'),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 170,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                  itemCount: feed.myPosts(user.id).length,
+                  itemBuilder: (context, i) {
+                    final p = feed.myPosts(user.id)[i];
+                    return SizedBox(
+                      width: 280,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: OpportunityCard(
+                          post: p,
+                          onTap: () => _open(context, p),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
