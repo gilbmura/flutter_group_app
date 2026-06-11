@@ -34,8 +34,8 @@ Leadership University (ALU) ecosystem, built with **Flutter**.
 - Bottom-nav navigation with preserved per-tab state (IndexedStack)
 
 ## Tech & architecture
-- **State management:** `provider` (4 ChangeNotifiers: Auth, Feed, RSVP, Chat)
-- **Persistence:** `shared_preferences` (auth session + RSVPs)
+- **State management:** `provider` (5 ChangeNotifiers: Auth, Feed, RSVP, Chat, Communities)
+- **Persistence:** `shared_preferences` (auth session, RSVPs, user posts, chat messages, community joins)
 - **Other:** `uuid` (stable IDs for user posts), `intl` (date formatting)
 - **No backend required** — seeded from `lib/data/mock_data.dart`.
 
