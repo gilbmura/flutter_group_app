@@ -5,6 +5,7 @@ import 'data/mock_data.dart';
 import 'providers/auth_provider.dart';
 import 'providers/chat_provider.dart';
 import 'providers/feed_provider.dart';
+import 'providers/notification_provider.dart';
 import 'providers/rsvp_provider.dart';
 import 'screens/onboarding/onboarding_screen.dart';
 import 'screens/shell/app_shell.dart';
@@ -20,6 +21,7 @@ class AluConnectApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => RsvpProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => FeedProvider(MockData.posts())),
         ChangeNotifierProvider(
             create: (_) => ChatProvider(MockData.conversations())),

@@ -8,6 +8,9 @@ import '../../providers/rsvp_provider.dart';
 import '../../theme/app_theme.dart';
 import '../communities/communities_screen.dart';
 import '../rsvps/my_rsvps_screen.dart';
+import 'help_support_screen.dart';
+import 'notifications_screen.dart';
+import 'saved_screen.dart';
 
 /// Profile leads with the leadership footprint (events organized, attended,
 /// communities led) — reflecting ALU's leadership-first culture, not vanity
@@ -117,13 +120,21 @@ class ProfileScreen extends StatelessWidget {
               label: 'My Communities',
               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => const CommunitiesScreen()))),
-          _MenuItem(icon: Icons.bookmark_border, label: 'Saved', onTap: () {}),
+          _MenuItem(
+              icon: Icons.bookmark_border,
+              label: 'Saved',
+              onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const SavedScreen()))),
           _MenuItem(
               icon: Icons.notifications_none,
               label: 'Notifications',
-              onTap: () {}),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const NotificationsScreen()))),
           _MenuItem(
-              icon: Icons.help_outline, label: 'Help & Support', onTap: () {}),
+              icon: Icons.help_outline,
+              label: 'Help & Support',
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const HelpSupportScreen()))),
           const SizedBox(height: 12),
           TextButton.icon(
             onPressed: () => context.read<AuthProvider>().signOut(),
