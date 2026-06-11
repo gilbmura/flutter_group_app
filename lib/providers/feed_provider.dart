@@ -60,8 +60,12 @@ class FeedProvider extends ChangeNotifier {
     return filtered;
   }
 
-  //For a the given user, when posts are made, the newest first show on the feed
-  List<Post> myPosts(String userId) => posts.where((p) => p.authorId == userId).toList();
+  List<Post> myPosts(String userId) {
+    final mine = _posts.where((post) => post.authorId == userId).toList();
+    mine.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return mine;
+  }
+
   Post? byId(String id) {
     for (final p in _posts) {
       if (p.id == id) return p;

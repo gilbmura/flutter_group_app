@@ -25,8 +25,8 @@ class Post {
   final String authorName;
   final String authorRole;
   final Campus campus;
-  final String authorId; // This allows or shows reliable ownership of a post made
-  final DateTime createdAt; // this will allows feed ordering i.e tells us when a post is made
+  final String authorId;
+  final DateTime createdAt;
   /// If true, students on the *other* campus can join remotely. This is the
   /// mechanism behind cross-campus RSVP — a Mauritius student joining a Kigali
   /// pitch night.
@@ -47,6 +47,7 @@ class Post {
 
   Post({
     required this.id,
+    required this.authorId,
     required this.type,
     required this.title,
     required this.description,
@@ -62,7 +63,6 @@ class Post {
     this.applyBy,
     this.goingCount = 0,
     this.interestedCount = 0,
-    required this.authorId,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
 }

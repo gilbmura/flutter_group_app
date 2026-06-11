@@ -21,6 +21,7 @@ class MockData {
   static List<Post> posts() => [
         Post(
           id: 'p1',
+          authorId: 'a1',
           type: PostType.event,
           title: 'AI for Social Impact Workshop',
           description:
@@ -41,6 +42,7 @@ class MockData {
         ),
         Post(
           id: 'p2',
+          authorId: 'a2',
           type: PostType.event,
           title: 'ALU Entrepreneurship Pitch Night',
           description:
@@ -60,6 +62,7 @@ class MockData {
         ),
         Post(
           id: 'p3',
+          authorId: 'a3',
           type: PostType.opportunity,
           title: 'Sustainable Solutions Challenge',
           description:
@@ -80,6 +83,7 @@ class MockData {
         ),
         Post(
           id: 'p4',
+          authorId: 'a4',
           type: PostType.opportunity,
           title: 'Campus Ambassador Program',
           description:
@@ -98,6 +102,7 @@ class MockData {
         ),
         Post(
           id: 'p5',
+          authorId: 'a5',
           type: PostType.announcement,
           title: 'Library extended hours during exams',
           description:
@@ -111,6 +116,7 @@ class MockData {
         ),
         Post(
           id: 'p6',
+          authorId: 'a6',
           type: PostType.event,
           title: 'Community Clean-Up Drive',
           description:
