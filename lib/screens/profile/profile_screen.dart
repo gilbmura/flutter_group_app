@@ -45,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 88,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: AppColors.amber.withOpacity(0.18),
+                  color: AppColors.amber.withValues(alpha: 0.18),
                   shape: BoxShape.circle,
                   border: Border.all(color: AppColors.amber, width: 2),
                 ),
@@ -95,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: AppColors.amber.withOpacity(0.15),
+                          color: AppColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(m,

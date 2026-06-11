@@ -112,7 +112,7 @@ class _Bubble extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 10,
                     color: me
-                        ? const Color(0xFF1A1300).withOpacity(0.6)
+                        ? const Color(0xFF1A1300).withValues(alpha: 0.6)
                         : AppColors.textMuted)),
           ],
         ),

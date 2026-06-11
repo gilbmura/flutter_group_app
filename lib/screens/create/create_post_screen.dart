@@ -145,9 +145,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ],
           ),
           if (!canPostOpp)
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(children: const [
+            const Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Row(children: [
                 Icon(Icons.lock_outline, size: 14, color: AppColors.textMuted),
                 SizedBox(width: 6),
                 Expanded(
@@ -187,7 +187,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           const SizedBox(height: 8),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
-            activeColor: AppColors.amber,
+            activeThumbColor: AppColors.amber,
             value: _hybrid,
             onChanged: (v) => setState(() => _hybrid = v),
             title: const Text('Allow remote / cross-campus joining'),

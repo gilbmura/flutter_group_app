@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/post.dart';
 import '../../providers/feed_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/empty_state.dart';

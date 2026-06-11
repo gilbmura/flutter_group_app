@@ -44,61 +44,63 @@ class OpportunityCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(color: AppColors.border),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              width: 5,
-              decoration: BoxDecoration(
-                color: _accent,
-                borderRadius: const BorderRadius.horizontal(
-                    left: Radius.circular(AppRadius.md)),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: _accent.withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(post.type.label,
-                              style: TextStyle(
-                                  color: _accent,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                        const Spacer(),
-                        Text(dateStr,
-                            style: const TextStyle(
-                                color: AppColors.textMuted, fontSize: 12)),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(post.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w700)),
-                    const SizedBox(height: 6),
-                    Text(post.authorName,
-                        style: const TextStyle(
-                            color: AppColors.textMuted, fontSize: 12)),
-                    const SizedBox(height: 10),
-                    CampusChip(campus: post.campus, hybrid: post.isHybrid),
-                  ],
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                width: 5,
+                decoration: BoxDecoration(
+                  color: _accent,
+                  borderRadius: const BorderRadius.horizontal(
+                      left: Radius.circular(AppRadius.md)),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: _accent.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(post.type.label,
+                                style: TextStyle(
+                                    color: _accent,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700)),
+                          ),
+                          const Spacer(),
+                          Text(dateStr,
+                              style: const TextStyle(
+                                  color: AppColors.textMuted, fontSize: 12)),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(post.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 6),
+                      Text(post.authorName,
+                          style: const TextStyle(
+                              color: AppColors.textMuted, fontSize: 12)),
+                      const SizedBox(height: 10),
+                      CampusChip(campus: post.campus, hybrid: post.isHybrid),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

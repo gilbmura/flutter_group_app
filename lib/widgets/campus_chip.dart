@@ -17,7 +17,7 @@ class CampusChip extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: campus.color.withOpacity(0.18),
+            color: campus.color.withValues(alpha: 0.18),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -41,7 +41,7 @@ class CampusChip extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.amber.withOpacity(0.18),
+              color: AppColors.amber.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Row(

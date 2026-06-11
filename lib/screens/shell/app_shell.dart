@@ -156,7 +156,7 @@ class _CreateButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: AppColors.amber.withOpacity(0.4),
+              color: AppColors.amber.withValues(alpha: 0.4),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),

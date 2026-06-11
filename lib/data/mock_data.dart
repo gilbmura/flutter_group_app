@@ -76,8 +76,7 @@ class MockData {
           location: 'Mauritius Campus',
           tags: ['Competition', 'Hackathon'],
           missions: ['Climate & Energy', 'Conservation & Wildlife'],
-          applyBy: 'Apply by ' +
-              _fmt(_now.add(const Duration(days: 8))),
+          applyBy: 'Apply by ${_fmt(_now.add(const Duration(days: 8)))}',
           goingCount: 24,
           interestedCount: 40,
         ),
@@ -96,7 +95,7 @@ class MockData {
           isHybrid: true,
           tags: ['Leadership', 'Program'],
           missions: ['Education', 'Governance'],
-          applyBy: 'Apply by ' + _fmt(_now.add(const Duration(days: 14))),
+          applyBy: 'Apply by ${_fmt(_now.add(const Duration(days: 14)))}',
           goingCount: 18,
           interestedCount: 55,
         ),

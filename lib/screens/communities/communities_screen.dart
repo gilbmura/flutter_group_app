@@ -71,7 +71,7 @@ class _CommunitiesScreenState extends State<CommunitiesScreen> {
                     ),
                     child: Row(children: [
                       CircleAvatar(
-                        backgroundColor: c.campus.color.withOpacity(0.2),
+                        backgroundColor: c.campus.color.withValues(alpha: 0.2),
                         child: Icon(Icons.diversity_3, color: c.campus.color),
                       ),
                       const SizedBox(width: 12),

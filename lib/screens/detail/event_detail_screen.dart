@@ -43,8 +43,8 @@ class EventDetailScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.lg),
               gradient: LinearGradient(
                 colors: [
-                  post.campus.color.withOpacity(0.6),
-                  AppColors.amber.withOpacity(0.5),
+                  post.campus.color.withValues(alpha: 0.6),
+                  AppColors.amber.withValues(alpha: 0.5),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -81,7 +81,7 @@ class EventDetailScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.amber.withOpacity(0.12),
+                color: AppColors.amber.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: const Row(children: [

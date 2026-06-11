@@ -45,7 +45,7 @@ class _ChatTile extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
-        backgroundColor: AppColors.amber.withOpacity(0.18),
+        backgroundColor: AppColors.amber.withValues(alpha: 0.18),
         child: const Icon(Icons.groups, color: AppColors.amber),
       ),
       title: Text(convo.title,

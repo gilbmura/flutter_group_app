@@ -30,72 +30,81 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const _BrandMark(),
-              const SizedBox(height: 24),
-              const Text('ALU Intercampus',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)),
-              const Text('Connect',
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.amber)),
-              const SizedBox(height: 12),
-              const Text('Connect. Collaborate. Lead together.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.textMuted, fontSize: 15)),
-              const SizedBox(height: 40),
-              PrimaryButton(
-                label: 'Sign in with ALU Account',
-                icon: Icons.school,
-                onPressed: () => _openSignIn(context),
-              ),
-              const SizedBox(height: 20),
-              Row(children: [
-                const Expanded(child: Divider(color: AppColors.border)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('or continue with',
-                      style: TextStyle(color: AppColors.textMuted)),
-                ),
-                const Expanded(child: Divider(color: AppColors.border)),
-              ]),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _SocialButton(
-                      label: 'Google',
-                      icon: Icons.g_mobiledata,
-                      onTap: () => _openSignIn(context)),
-                  const SizedBox(width: 16),
-                  _SocialButton(
-                      label: 'Apple',
-                      icon: Icons.apple,
-                      onTap: () => _openSignIn(context)),
-                ],
-              ),
-              const SizedBox(height: 28),
-              TextButton(
-                onPressed: () => _openSignIn(context),
-                child: const Text.rich(TextSpan(
-                  text: 'New here? ',
-                  style: TextStyle(color: AppColors.textMuted),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextSpan(
-                        text: 'Create account',
+                    const _BrandMark(),
+                    const SizedBox(height: 24),
+                    const Text('ALU Intercampus',
                         style: TextStyle(
-                            color: AppColors.amber,
-                            fontWeight: FontWeight.w700)),
+                            fontSize: 30, fontWeight: FontWeight.w800)),
+                    const Text('Connect',
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.amber)),
+                    const SizedBox(height: 12),
+                    const Text('Connect. Collaborate. Lead together.',
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(color: AppColors.textMuted, fontSize: 15)),
+                    const SizedBox(height: 40),
+                    PrimaryButton(
+                      label: 'Sign in with ALU Account',
+                      icon: Icons.school,
+                      onPressed: () => _openSignIn(context),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(children: [
+                      const Expanded(child: Divider(color: AppColors.border)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text('or continue with',
+                            style: TextStyle(color: AppColors.textMuted)),
+                      ),
+                      const Expanded(child: Divider(color: AppColors.border)),
+                    ]),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _SocialButton(
+                            label: 'Google',
+                            icon: Icons.g_mobiledata,
+                            onTap: () => _openSignIn(context)),
+                        const SizedBox(width: 16),
+                        _SocialButton(
+                            label: 'Apple',
+                            icon: Icons.apple,
+                            onTap: () => _openSignIn(context)),
+                      ],
+                    ),
+                    const SizedBox(height: 28),
+                    TextButton(
+                      onPressed: () => _openSignIn(context),
+                      child: const Text.rich(TextSpan(
+                        text: 'New here? ',
+                        style: TextStyle(color: AppColors.textMuted),
+                        children: [
+                          TextSpan(
+                              text: 'Create account',
+                              style: TextStyle(
+                                  color: AppColors.amber,
+                                  fontWeight: FontWeight.w700)),
+                        ],
+                      )),
+                    ),
                   ],
-                )),
+                ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -110,7 +119,7 @@ class _BrandMark extends StatelessWidget {
       width: 84,
       height: 84,
       decoration: BoxDecoration(
-        color: AppColors.amber.withOpacity(0.12),
+        color: AppColors.amber.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(24),
       ),
       child: const Icon(Icons.change_history, size: 48, color: AppColors.amber),

@@ -24,7 +24,7 @@ class MyRsvpsScreen extends StatelessWidget {
             tabs: [Tab(text: 'Going'), Tab(text: 'Interested')],
           ),
         ),
-        body: TabBarView(children: [
+        body: const TabBarView(children: [
           _RsvpList(going: true),
           _RsvpList(going: false),
         ]),

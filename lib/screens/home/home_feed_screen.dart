@@ -134,9 +134,9 @@ class HomeFeedScreen extends StatelessWidget {
           ),
 
           if (user != null && feed.myPosts(user.id).isNotEmpty) ...[
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                 child: SectionHeader(title: 'My posts'),
               ),
             ),
@@ -267,7 +267,7 @@ class _Avatar extends StatelessWidget {
       height: 44,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColors.amber.withOpacity(0.18),
+        color: AppColors.amber.withValues(alpha: 0.18),
         shape: BoxShape.circle,
         border: Border.all(color: AppColors.amber, width: 1.5),
       ),
