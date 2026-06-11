@@ -36,7 +36,7 @@ class HomeFeedScreen extends StatelessWidget {
         slivers: [
           SliverAppBar(
             pinned: true,
-            backgroundColor: AppColors.navy,
+            backgroundColor: AppColors.background,
             elevation: 0,
             automaticallyImplyLeading: false,
             title: Row(
