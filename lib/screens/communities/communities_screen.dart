@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../data/mock_data.dart';
 import '../../models/campus.dart';
 import '../../models/community.dart';
+import '../../providers/communities_provider.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/empty_state.dart';
 
-/// Communities. Join/Leave is local state (setState) — persistence here is not
-/// required by the brief, but the toggle demonstrates dynamic interaction.
 class CommunitiesScreen extends StatefulWidget {
   const CommunitiesScreen({super.key});
   @override
@@ -14,29 +14,25 @@ class CommunitiesScreen extends StatefulWidget {
 }
 
 class _CommunitiesScreenState extends State<CommunitiesScreen> {
-  late List<Community> _communities;
   bool _myClubsOnly = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _communities = MockData.communities();
-  }
-
-  void _toggleJoin(int index) {
-    setState(() {
-      final c = _communities[index];
-      _communities[index] = c.copyWith(
-        joined: !c.joined,
-        members: c.joined ? c.members - 1 : c.members + 1,
-      );
-    });
+  Future<void> _toggleJoin(Community c) async {
+    final wasJoined = c.joined;
+    await context.read<CommunitiesProvider>().toggleJoin(c.id);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(wasJoined ? 'Left ${c.name}' : 'Joined ${c.name}'),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final all = context.watch<CommunitiesProvider>().communities;
     final list =
-        _myClubsOnly ? _communities.where((c) => c.joined).toList() : _communities;
+        _myClubsOnly ? all.where((c) => c.joined).toList() : all;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Communities')),
       body: Padding(
@@ -56,55 +52,80 @@ class _CommunitiesScreenState extends State<CommunitiesScreen> {
             ]),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, i) {
-                  final c = list[i];
-                  final realIndex = _communities.indexOf(c);
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(AppRadius.md),
-                      border: Border.all(color: AppColors.border),
+              child: list.isEmpty
+                  ? EmptyState(
+                      icon: _myClubsOnly
+                          ? Icons.diversity_3_outlined
+                          : Icons.groups_outlined,
+                      title: _myClubsOnly
+                          ? 'No clubs joined yet'
+                          : 'No communities',
+                      message: _myClubsOnly
+                          ? 'Browse All Clubs and join communities that match your interests.'
+                          : 'Communities will appear here when available.',
+                    )
+                  : ListView.builder(
+                      itemCount: list.length,
+                      itemBuilder: (context, i) {
+                        final c = list[i];
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: Row(children: [
+                            CircleAvatar(
+                              backgroundColor:
+                                  c.campus.color.withOpacity(0.2),
+                              child: Icon(Icons.diversity_3,
+                                  color: c.campus.color),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(c.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w700)),
+                                  Text(
+                                      '${c.members} members • ${c.campus.label}',
+                                      style: const TextStyle(
+                                          color: AppColors.textMuted,
+                                          fontSize: 12)),
+                                  if (c.description.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(c.description,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: AppColors.textMuted,
+                                              fontSize: 12)),
+                                    ),
+                                ],
+                              ),
+                            ),
+                            OutlinedButton(
+                              onPressed: () => _toggleJoin(c),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: c.joined
+                                    ? AppColors.success
+                                    : AppColors.amber,
+                                side: BorderSide(
+                                    color: c.joined
+                                        ? AppColors.success
+                                        : AppColors.amber),
+                              ),
+                              child: Text(c.joined ? 'Joined' : 'Join'),
+                            ),
+                          ]),
+                        );
+                      },
                     ),
-                    child: Row(children: [
-                      CircleAvatar(
-                        backgroundColor: c.campus.color.withOpacity(0.2),
-                        child: Icon(Icons.diversity_3, color: c.campus.color),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(c.name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w700)),
-                            Text('${c.members} members • ${c.campus.label}',
-                                style: const TextStyle(
-                                    color: AppColors.textMuted, fontSize: 12)),
-                          ],
-                        ),
-                      ),
-                      OutlinedButton(
-                        onPressed: () => _toggleJoin(realIndex),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: c.joined
-                              ? AppColors.success
-                              : AppColors.amber,
-                          side: BorderSide(
-                              color: c.joined
-                                  ? AppColors.success
-                                  : AppColors.amber),
-                        ),
-                        child: Text(c.joined ? 'Joined' : 'Join'),
-                      ),
-                    ]),
-                  );
-                },
-              ),
             ),
           ],
         ),

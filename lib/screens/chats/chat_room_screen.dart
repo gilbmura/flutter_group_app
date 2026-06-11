@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../models/chat.dart';
 import '../../providers/chat_provider.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/empty_state.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   final String conversationId;
@@ -26,7 +27,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
   void _send() {
     final text = _controller.text;
-    if (text.trim().isEmpty) return;
+    if (text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Type a message before sending')),
+      );
+      return;
+    }
     context.read<ChatProvider>().sendMessage(widget.conversationId, text);
     _controller.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -41,7 +47,16 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   Widget build(BuildContext context) {
     final convo = context.watch<ChatProvider>().byId(widget.conversationId);
     if (convo == null) {
-      return const Scaffold(body: Center(child: Text('Conversation not found')));
+      return Scaffold(
+        appBar: AppBar(),
+        body: EmptyState(
+          icon: Icons.chat_bubble_outline,
+          title: 'Conversation not found',
+          message: 'This chat may no longer be available.',
+          actionLabel: 'Go back',
+          onAction: () => Navigator.of(context).pop(),
+        ),
+      );
     }
     return Scaffold(
       appBar: AppBar(
